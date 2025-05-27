@@ -4,9 +4,9 @@ from flask import Flask
 from pyrogram import Client, filters
 
 # ✅ Environment se API config le lo
-API_ID = int(os.environ.get("API_ID", 12345))
-API_HASH = os.environ.get("API_HASH", "your_api_hash")
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "your_bot_token")
+API_ID = int(os.environ.get("API_ID", 0))
+API_HASH = os.environ.get("API_HASH", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 
 # ✅ Flask app
 app = Flask(__name__)
