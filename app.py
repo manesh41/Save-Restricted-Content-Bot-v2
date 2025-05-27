@@ -1,14 +1,37 @@
 import os
-from flask import Flask, render_template
+import threading
+from flask import Flask
+from pyrogram import Client, filters
 
+# ✅ Environment se API config le lo
+API_ID = int(os.environ.get("API_ID", 12345))
+API_HASH = os.environ.get("API_HASH", "your_api_hash")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "your_bot_token")
+
+# ✅ Flask app
 app = Flask(__name__)
 
 @app.route("/")
-def welcome():
-    # Render the welcome page with animated "Team SPY" text
-    return render_template("welcome.html")
+def home():
+    return "Telegram Bot is Running!"
 
-if __name__ == "__main__":
-    # Default to port 5000 if PORT is not set in the environment
-    port = int(os.environ.get("PORT", 8000))
+def run_flask():
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+# ✅ Pyrogram Client
+bot = Client(
+    "bot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN
+)
+
+@bot.on_message(filters.command("start"))
+def start_handler(client, message):
+    message.reply_text("Bot is working, bhai!")
+
+# ✅ Run both Flask and Bot
+if __name__ == "__main__":
+    threading.Thread(target=run_flask).start()
+    bot.run()
